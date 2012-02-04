@@ -1,0 +1,35 @@
+% @2012 Christopher Brown (io@henrian.com), MIT licensed
+function [label] = knnDistance(testImage, trainImages, trainLabels, K)
+
+% knnsearch finds the nearest neighbor in X for each point in Y. X is an mx-by-n
+%     matrix and Y is an my-by-n matrix. Rows of X and Y correspond to
+%     observations and columns correspond to variables.
+%size(eigenTrain) = [4000 4000]
+%size(testImage) = [1 4000]
+[IX, D] = knnsearch(trainImages, testImage, 'K', K);
+if K > 1
+%     topLabels = single(trainLabels(IX));
+%     tab = tabulate(topLabels);
+%     [~, IX2] = sort(tab(:,2), 'descend');
+%     label = tab(IX2(1),1);
+%     grpstats(trainLabels(IX))
+    % find the potential labels
+    kLabels = trainLabels(IX);
+    [b, m, n] = unique(kLabels);
+    multiplier = zeros(K, length(b));
+    ones_at = (0:length(b):length(b)*K-1) + n
+    tab = tabulate(n);
+    for cc=b
+        sum(D(trainLabels(IX)==b))
+        
+        
+    counts = tabs(:,2)
+    % b = [1 8 9]
+    % 
+    topLabels = single(trainLabels(IX));
+    tab = tabulate(topLabels);
+    [~, IX2] = sort(tab(:,2), 'descend');
+    label = tab(IX2(1),1);
+else
+    label = trainLabels(IX);
+end

@@ -1,0 +1,219 @@
+ndims = 2
+center = 0
+sd = 1
+
+nclusters = 2
+for c=1:nclusters,
+  mus{c} = normrnd(center, sd, ndims, 1)
+  sigma_raw = normrnd(center, sd, ndims, ndims)
+  sigmas{c} = sigma_raw * sigma_raw'
+end
+
+gold_p = unifrnd(0, 1)
+
+% generate
+nsamples = 80
+samples = []
+for i=1:nsamples,
+  cluster_i = (unifrnd(0, 1) > gold_p) + 1
+  % column 1: x, column 2: y, column 3: gold label
+  samples = [samples; mvnrnd(mus{cluster_i}, sigmas{cluster_i}) cluster_i]
+end
+xy_bounds = [min(samples(:,1)) max(samples(:,1)) min(samples(:,2)) max(samples(:,2))] 
+data = samples(:,1:ndims)
+gold_labels = samples(:,ndims+1)
+
+
+% scatter and gold
+clf; hold all;
+for c=1:nclusters, scatter(data(gold_labels == c,1), data(gold_labels == c,2)), end
+for c=1:nclusters, ezcontour(@(x,y) mvnpdf([x y], mus{c}', sigmas{c}), xy_bounds), end
+
+
+
+
+
+% do built-in k-means clustering to get initial guess.
+labels = kmeans(data, 2)
+% for each cluster, get all the points k-means thought were in that cluster,
+%   and then predict mu and sigma parameters
+for c=1:nclusters,
+  cdata = data(labels == c,:)
+  post_mus{c} = mean(cdata)
+  post_sigmas{c} = cov(cdata)
+end
+
+% scatter and guess
+clf; hold all;
+for c=1:nclusters, scatter(data(gold_labels == c,1), data(gold_labels == c,2)), end
+for c=1:nclusters, ezcontour(@(x,y) mvnpdf([x y], post_mus{c}, post_sigmas{c}), xy_bounds), end
+
+post_p = 0.5
+post_ps = [post_p 1-post_p] % should be a dirichlet or something for nclusters > 2
+
+for x=1:50
+  % EXPECTATION (we guess posteriors)
+  % ps is a matrix, where the columns are clusters, and rows correspond to data,
+  %   and cells describe the log-likelihood that the data came from those clusters
+  % j is the cluster index
+  unweighted_posteriors = []
+  for j=1:nclusters,
+    unweighted_posteriors(:,j) = mvnpdf(data, post_mus{j}, post_sigmas{j}) * post_ps(j)
+  end
+  posteriors = bsxfun(@rdivide, unweighted_posteriors, sum(unweighted_posteriors, 2))
+
+
+  % MAXIMIZATION (we set post_ps, post_mus, post_sigmas), j is the cluster index
+  sum_posteriors = sum(posteriors)
+  post_ps = sum_posteriors / nsamples
+  for j=1:nclusters,
+    post_mus{c} = (posteriors(:,j)' * data) / sum_posteriors(j)
+
+    post_sigma = []
+    enough_mus = repmat(post_mus{c}, nsamples, 1)
+    data_difference = data - enough_mus
+    for i=1:nsamples,
+      post_sigma(:,:,i) = (data_difference(i,:)' * data_difference(i,:)) * posteriors(i,j)
+    end
+    post_sigmas{c} = sum(post_sigma,3) / sum_posteriors(j)
+
+    %big_posteriors = posteriors(:,j) * posteriors(:,j)'
+    %post_sigmas{c} = (data_difference' * big_posteriors * data_difference) / sum_posteriors(j)
+  end
+end
+
+clf; hold all;
+for c=1:nclusters, scatter(data(gold_labels == c,1), data(gold_labels == c,2)), end
+for c=1:nclusters, ezcontour(@(x,y) mvnpdf([x y], post_mus{c}, post_sigmas{c}), xy_bounds), end
+
+
+
+
+
+    %diffs_times_posts
+    % = bsxfun(@times, data_difference, posteriors(:,j))
+    % = data_difference .* repmat(posteriors(:,j), 1, ndims)
+
+    %cov(diffs_times_posts)
+
+    % p is the probability the data came from the current cluster "j"
+    %log_likelihood_of_j = log_likelihoods(:,j)
+    %sum_of_likelihood_of_j = sum(exp(log_likelihood_of_j))
+    %log_sum_of_likelihood_of_j = log(sum(exp(log_likelihood_of_j)))
+    %sum_p = sum(log_likelihood_of_j)
+    %sum_posteriors = sum(posteriors(:,j))
+
+    %for i=1:nsamples, post_mu(i,:) = posteriors(i,j) .* data(i,:), end
+    %post_mus{c} = sum(post_mu) / sum_posteriors
+
+    %post_sigma_rows = []
+
+    %a = posteriors(:,j)' * data_difference
+
+    %posteriors(:,j)' * 
+
+    %big = (data - enough_mus)' * (data - enough_mus)
+    %colo = posteriors(:,j)*posteriors(:,j)'
+    %  ' 
+    %repmat
+    %posteriors(:,j)' * (data - post_mus{c})' * (data(i,:) - post_mus{c})
+    %for i=1:nsamples,
+    %  post_sigma_rows(:,:,i) = posteriors(i,j) .* (data(i,:) - post_mus{c})' * (data(i,:) - post_mus{c})
+    %end
+    % = sum(post_sigma_rows,3) / sum_posteriors
+
+    % print out the gold-labeled points
+    %cluster_data = data(gold_labels == c,:)
+    %scatter(cluster_data(:,1), cluster_data(:,2))
+    %hold all
+    % print out the guesses
+    %ezcontour(@(x,y) mvnpdf([x y], post_mus{c}, post_sigmas{c}), xy_bounds);
+
+
+hold off
+
+% scatter and gold
+clf; hold all;
+for c=1:nclusters, scatter(data(gold_labels == c,1), data(gold_labels == c,2)), end
+for c=1:nclusters, ezcontour(@(x,y) mvnpdf([x y], mus{c}', sigmas{c}), xy_bounds), end
+
+% scatter and guess
+clf; hold all;
+for c=1:nclusters, scatter(data(gold_labels == c,1), data(gold_labels == c,2)), end
+for c=1:nclusters, ezcontour(@(x,y) mvnpdf([x y], post_mus{c}, post_sigmas{c}), xy_bounds), end
+
+
+
+% [ps, (ps(:,2) > ps(:,1)) + 1, gold_labels]
+
+
+
+
+% ps(:,c) = log(mvnpdf(samples(:,1:2), mus{c}', sigmas{c}))
+
+
+
+
+
+
+
+
+
+
+%post_mus = 
+%sample1 = 
+
+
+
+for i=1:nsamples,
+end
+
+
+
+
+sample1 = mvnrnd(mu1, sigma1, 100)
+sample2 = mvnrnd(mu2, sigma2, 100)
+scatter(sample1(:,1), sample1(:,2))
+hold all
+scatter(sample2(:,1), sample2(:,2))
+hold off
+
+
+
+
+
+
+
+
+
+diag_indices = 1:dims+1:dims^2
+sigma2_raw = normrnd(0, 5, dims, dims)
+sigma1 = abs(triu(sigma1_raw)) + abs(triu(sigma1_raw)')
+sigma1(diag_indices) = abs(sigma1_raw(diag_indices))
+
+%mus = []
+%sigmas = {}
+mu2 = normrnd(center, sd, dims, 1)
+sigma2_raw = normrnd(0, 5, dims, dims)
+sigma2 = sigma2_raw * sigma2_raw'
+
+
+
+
+
+
+%colormap('Autumn')
+%caxis([-1 1])
+%a1 = gca;
+%hold on;
+%a2 = axes;
+% caxis(axes_handle, [-Inf Inf]);
+
+% caxis auto;
+%colormap('default');
+
+
+
+%big_posteriors = posteriors(:,j) * posteriors(:,j)';
+%post_sigmas{j} = (data_difference' * big_posteriors * data_difference) / sum_posteriors(j)
+

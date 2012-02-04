@@ -1,0 +1,29 @@
+% @2012 Christopher Brown (io@henrian.com), MIT licensed
+function [m, V] = hw2FindEigendigits(A)
+[x k] = size(A);
+% A is size = [x k] % i.e. x rows (usually 784), k columns (nImages)
+%   where each row is a particular pixel location
+%   and each column is a full image
+% this means that A(:,3) will show all the pixels in image #3
+% the return value m will be of length x
+% the return value V is also an [x k] matrix, containing the first k
+% eigenvectors
+
+% take the column-wise mean, so that each row is preserved
+m = mean(A, 2); % the average of each pixel across images (x-long)
+% m = mean(A, 1); % the average pixel value for each column (k-long)
+m_enough = repmat(m, 1, k);
+A_minus_mean = A - m_enough;
+A_cov = cov(A_minus_mean'); % [x x]
+% A_cov = cov(A_minus_mean); % [k k]
+% A_cov = A_minus_mean * A_minus_mean
+
+[V D] = eig(A_cov);
+% the columns of V, i.e. V(:,5) are the eigenvectors
+[B IX] = sort(diag(D));
+V = V(:,IX(end:-1:1));
+% V is now [x x], but we want [x k]
+% xxx: need to normalize. or not? it seems normalized by default
+Vout = zeros(x, k);
+Vout(:,1:min(k, x)) = V(:,1:min(k, x));
+V = Vout;
