@@ -1,4 +1,7 @@
 % @2012 Christopher Brown (io@henrian.com), MIT licensed
+% This file is used to copy and paste ad-hoc commands into the Matlab command window,
+% it is not intended to be run as a script
+
 % flatten = @(square) square(:);
 % map = @(array, mapper) arrayfun(@(x) mapper(x), array);
 % show = @(images, index) image(reshape(images(index,:), 28, 28));
@@ -9,7 +12,7 @@
 
 % size(trainImages) => 28          28           1       60000
 % images: each row is one image, the columns are pixels
-%[images, labels] = flatten4D(trainImages, trainLabels, 1:nImages);
+% [images, labels] = flatten4D(trainImages, trainLabels, 1:nImages);
 % [m, V] = hw2FindEigendigits(images');
 
 % nTest = 10000;
@@ -69,6 +72,9 @@ plotCsvFile('results-hard5000.csv', 0)
 title('Hard 5000');
 export_fig plots/results-hard-5000.pdf -transparent
 
+plotCsvFile('results-all10000.csv', 0)
+title('All 10000');
+export_fig plots/results-all-10000.pdf -transparent
 
 
 rows = 10;
@@ -88,7 +94,7 @@ export_fig plots/eigenvectors-25.pdf -transparent
 
 
 % convert to-do csv to results matrix
-todo = csvread('hard5000-test.csv');
+todo = csvread('all10000-test.csv');
 results = zeros(length(nImagesCandidates), length(topNCandidates));
 for line=1:size(todo, 1)
     nImages = todo(line, 1);
@@ -104,4 +110,9 @@ for line=1:size(todo, 1)
     
     results(nImageIndex, topNIndex) = result;
 end
-csvwrite('results-hard5000.csv', results);
+csvwrite('results-all10000.csv', results);
+
+
+digits(4); //this changes the output precision
+s=sym(A,?d'); //the ?d? flag makes sure the sym output is in decimal form
+latex(s);

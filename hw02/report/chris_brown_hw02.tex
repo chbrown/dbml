@@ -2,6 +2,7 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{henrian-more}
 \usepackage{subfig}
+\usepackage{booktabs}
 
 \makeHeaders{Machine Learning: Homework 2}
 
@@ -85,8 +86,32 @@ There are two variables we can plot accuracy on: the number of top eigenvectors 
 
 We see that we can get pretty good results for as few as 500 training images while using just the top 50 eigenvectors. Perhaps the most interesting thing about these graphs is that for fewer training images, in the 100-10,000 range, it helps to truncate the eigenvectors, `de-noising' the data when transforming it into the PCA space, in a way. However, this advantage falls off as we simply use more and more training images (which is just another way of reducing noise in the training dataset).
 
-Overall, we achieved up to 93.28\% accuracy on the ``easy'' images (using the full test set, and the top 50 eigenvectors), and 97.18\% on the ``hard'' images. I didn't visually compare the different sets of the last 5,000 and first 5,000 of the 10,000 training images, so I must have accidentally put the last 5,000 results into the `easy' results. That or the assignment got the ordering backwards, because one would expect lower accuracy for the ``harder'' images.
 
+Overall, we achieved up to 93.28\% accuracy on the ``easy'' images (using the full test set, and the top 50 eigenvectors), and 97.18\% on the ``hard'' images. I didn't visually compare the different sets of the last 5,000 and first 5,000 of the 10,000 training images, so I must have accidentally put the last 5,000 results into the `easy' results. That or the assignment got the ordering backwards, because one would expect lower accuracy for the ``harder'' images. The top accuracy for the full 10,000, measured in a separate run, is predictably the mean of the other top accuracies: 95.23\%.
+
+Here is the underlying figures for the evaluation of the full 10,000:
+
+\begin{tabular}{r l l l l l l l l l l l l}
+  \toprule
+  ~ & 1 & 2 & 5 & 10 & 25 & 50 & 75 & 100 & 250 & 500 & 750 & 1000 \\
+  \midrule
+  1 &
+  2 &
+  5 &
+  10 &
+  25 &
+  50 &
+  75 &
+  100 &
+  250 &
+  500 &
+  1000 &
+  5000 &
+  10000 &
+  30000 &
+  60000 &
+  \bottomrule
+\end{tabular}
 
 
 \end{document}
