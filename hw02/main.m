@@ -18,8 +18,6 @@
 % nTest = 10000;
 % eval(nTest);
 
-% [testImages, testLabels] = flatten4D(trainImages, trainLabels, 50000:49999 + nTest);
-
 % imshow(results);
 % colormap(gray);
 % caxis
@@ -101,7 +99,7 @@ for line=1:size(todo, 1)
     topN = todo(line, 2);
     result = todo(line, 3);
     
-    nImagesCandidates = [1 2 5 10 25 50 75 100 250 500 1000 5000 10000 30000 50000];
+    nImagesCandidates = [1 2 5 10 25 50 75 100 250 500 1000 5000 10000 30000 60000];
     nImagesIndices = 1:length(nImagesCandidates);
     nImageIndex = nImagesIndices(nImagesCandidates==nImages);
     topNCandidates = [1 2 5 10 25 50 75 100 250 500 750 1000];
@@ -113,6 +111,8 @@ end
 csvwrite('results-all10000.csv', results);
 
 
-digits(4); //this changes the output precision
-s=sym(A,?d'); //the ?d? flag makes sure the sym output is in decimal form
-latex(s);
+% digits(4);
+% s = sym(A, 'd');
+% v = vpa(results, 3);
+% latex(s);
+num2str(results, '%.3f & '); % output in latex-ish format

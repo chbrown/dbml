@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  5 FEB 2012 11:42
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  5 FEB 2012 17:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -446,49 +446,89 @@ Package: caption3 2010/01/14 v3.1m caption3 kernel (AR)
 \sf@top=\skip132
 \sf@bottom=\skip133
 )
+(/usr/local/texlive/2011/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen135
+\lightrulewidth=\dimen136
+\cmidrulewidth=\dimen137
+\belowrulesep=\dimen138
+\belowbottomsep=\dimen139
+\aboverulesep=\dimen140
+\abovetopsep=\dimen141
+\cmidrulesep=\dimen142
+\cmidrulekern=\dimen143
+\defaultaddspace=\dimen144
+\@cmidla=\count112
+\@cmidlb=\count113
+\@aboverulesep=\dimen145
+\@belowrulesep=\dimen146
+\@thisruleclass=\count114
+\@lastruleclass=\count115
+\@thisrulewidth=\dimen147
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/rotating/rotating.sty
+Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@r@tfl@t=\count116
+\rotFPtop=\skip134
+\rotFPbot=\skip135
+\rot@float@box=\box75
+\rot@mess@toks=\toks34
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count117
+\float@exts=\toks35
+\float@box=\box76
+\@float@everytoks=\toks36
+\@floatcapt=\box77
+)
 (./chris_brown_hw02.aux)
 \openout1 = `chris_brown_hw02.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 8.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 8.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 12.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 12.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 8.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    ... okay on input line 12.
 
 (/usr/local/texlive/2011/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count112
-\scratchdimen=\dimen135
-\scratchbox=\box75
-\nofMPsegments=\count113
-\nofMParguments=\count114
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count115
-\MPscratchDim=\dimen136
-\MPnumerator=\count116
-\makeMPintoPDFobject=\count117
-\everyMPtoPDFconversion=\toks35
+\scratchcounter=\count118
+\scratchdimen=\dimen148
+\scratchbox=\box78
+\nofMPsegments=\count119
+\nofMParguments=\count120
+\everyMPshowfont=\toks37
+\MPscratchCnt=\count121
+\MPscratchDim=\dimen149
+\MPnumerator=\count122
+\makeMPintoPDFobject=\count123
+\everyMPtoPDFconversion=\toks38
 ) (/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
 
@@ -542,12 +582,14 @@ Package lastpage Info: Please have a look at the pagesLTS package at
 (lastpage)             or
 (lastpage)             http://www.ctan.org/tex-archive/ 
 (lastpage)             install/macros/latex/contrib/pagesLTS.tds.zip
-(lastpage)             ! on input line 8.
+(lastpage)             ! on input line 12.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption3 Info: subfig package 1.2 or 1.3 is loaded.
-LaTeX Info: Redefining \subref on input line 8.
+LaTeX Info: Redefining \subref on input line 12.
+Package caption Info: float package is loaded.
+Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 17.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 21.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -556,29 +598,29 @@ File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 File: ../plots/eigenvectors-25.pdf Graphic file (type pdf)
 
 <use ../plots/eigenvectors-25.pdf>
-Package pdftex.def Info: ../plots/eigenvectors-25.pdf used on input line 25.
+Package pdftex.def Info: ../plots/eigenvectors-25.pdf used on input line 29.
 (pdftex.def)             Requested size: 15.5264pt x 140.92792pt.
 
 <../plots/eigenvectors-100.pdf, id=2, 235.88126pt x 236.885pt>
 File: ../plots/eigenvectors-100.pdf Graphic file (type pdf)
 
 <use ../plots/eigenvectors-100.pdf>
-Package pdftex.def Info: ../plots/eigenvectors-100.pdf used on input line 30.
+Package pdftex.def Info: ../plots/eigenvectors-100.pdf used on input line 34.
 (pdftex.def)             Requested size: 140.33488pt x 140.92792pt.
 
 <../plots/eigenvectors-60000.pdf, id=3, 235.88126pt x 236.885pt>
 File: ../plots/eigenvectors-60000.pdf Graphic file (type pdf)
 
 <use ../plots/eigenvectors-60000.pdf>
-Package pdftex.def Info: ../plots/eigenvectors-60000.pdf used on input line 35.
+Package pdftex.def Info: ../plots/eigenvectors-60000.pdf used on input line 39.
 
 (pdftex.def)             Requested size: 140.33488pt x 140.92792pt.
-LaTeX Font Info:    Try loading font information for U+msa on input line 53.
+LaTeX Font Info:    Try loading font information for U+msa on input line 57.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 53.
+LaTeX Font Info:    Try loading font information for U+msb on input line 57.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -591,99 +633,80 @@ Non-PDF special ignored! <../plots/eigenvectors-25.pdf> <../plots/eigenvectors-
 File: ../plots/metrics-1nn.pdf Graphic file (type pdf)
 
 <use ../plots/metrics-1nn.pdf>
-Package pdftex.def Info: ../plots/metrics-1nn.pdf used on input line 62.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
+Package pdftex.def Info: ../plots/metrics-1nn.pdf used on input line 66.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
 
 <../plots/metrics-10nn-vote.pdf, id=31, 401.5pt x 327.2225pt>
 File: ../plots/metrics-10nn-vote.pdf Graphic file (type pdf)
 
 <use ../plots/metrics-10nn-vote.pdf>
-Package pdftex.def Info: ../plots/metrics-10nn-vote.pdf used on input line 63.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
+Package pdftex.def Info: ../plots/metrics-10nn-vote.pdf used on input line 67.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
 
 <../plots/metrics-10nn-weighted.pdf, id=32, 401.5pt x 327.2225pt>
 File: ../plots/metrics-10nn-weighted.pdf Graphic file (type pdf)
 
 <use ../plots/metrics-10nn-weighted.pdf>
 Package pdftex.def Info: ../plots/metrics-10nn-weighted.pdf used on input line 
-65.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
+69.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
 
 <../plots/metrics-cosine.pdf, id=33, 401.5pt x 327.2225pt>
 File: ../plots/metrics-cosine.pdf Graphic file (type pdf)
 
 <use ../plots/metrics-cosine.pdf>
-Package pdftex.def Info: ../plots/metrics-cosine.pdf used on input line 66.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<../plots/results-easy-5000.pdf, id=34, 401.5pt x 327.2225pt>
+Package pdftex.def Info: ../plots/metrics-cosine.pdf used on input line 70.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
+ [2]
+<../plots/results-easy-5000.pdf, id=38, 401.5pt x 327.2225pt>
 File: ../plots/results-easy-5000.pdf Graphic file (type pdf)
 
 <use ../plots/results-easy-5000.pdf>
-Package pdftex.def Info: ../plots/results-easy-5000.pdf used on input line 78.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
+Package pdftex.def Info: ../plots/results-easy-5000.pdf used on input line 83.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
 
-<../plots/results-hard-5000.pdf, id=35, 401.5pt x 327.2225pt>
+<../plots/results-hard-5000.pdf, id=39, 401.5pt x 327.2225pt>
 File: ../plots/results-hard-5000.pdf Graphic file (type pdf)
 
 <use ../plots/results-hard-5000.pdf>
-Package pdftex.def Info: ../plots/results-hard-5000.pdf used on input line 79.
-(pdftex.def)             Requested size: 211.3883pt x 172.28369pt.
+Package pdftex.def Info: ../plots/results-hard-5000.pdf used on input line 84.
+(pdftex.def)             Requested size: 234.87749pt x 191.43187pt.
 
+<../plots/results-all-10000.pdf, id=40, 702.625pt x 564.1075pt>
+File: ../plots/results-all-10000.pdf Graphic file (type pdf)
 
-LaTeX Warning: File `../plots/results-all-10000.pdf' not found on input line 81
-.
-
-
-! Package pdftex.def Error: File `../plots/results-all-10000.pdf' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.81 ...extwidth]{../plots/results-all-10000.pdf}}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: Float too large for page by 19.34714pt on input line 84.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-AED: lastpage setting LastPage 
-[2] [3 <../plots/metrics-1nn.pdf> <../plots/metrics-10nn-vote.pdf> <../plots/me
-trics-10nn-weighted.pdf> <../plots/metrics-cosine.pdf>] [4 <../plots/results-ea
-sy-5000.pdf> <../plots/results-hard-5000.pdf>] (./chris_brown_hw02.aux) ) 
+<use ../plots/results-all-10000.pdf>
+Package pdftex.def Info: ../plots/results-all-10000.pdf used on input line 86.
+(pdftex.def)             Requested size: 469.75499pt x 377.15816pt.
+ [3 <../plots/metrics-1nn.pdf> <../plots/metrics-10nn-vote.pdf> <../plots/metri
+cs-10nn-weighted.pdf> <../plots/metrics-cosine.pdf>] [4 <../plots/results-easy-
+5000.pdf> <../plots/results-hard-5000.pdf> <../plots/results-all-10000.pdf>] AE
+D: lastpage setting LastPage 
+[5] (./chris_brown_hw02.aux) ) 
 Here is how much of TeX's memory you used:
- 5418 strings out of 493633
- 79248 string characters out of 3143378
- 140089 words of memory out of 3000000
- 8599 multiletter control sequences out of 15000+200000
+ 5630 strings out of 493633
+ 82193 string characters out of 3143378
+ 147021 words of memory out of 3000000
+ 8796 multiletter control sequences out of 15000+200000
  14294 words of font info for 36 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 44i,11n,47p,1560b,350s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/
-local/texlive/2011/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/lo
-cal/texlive/2011/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/loc
-al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr
-/local/texlive/2011/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/l
-ocal/texlive/2011/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/loc
-al/texlive/2011/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local
-/texlive/2011/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/t
-exlive/2011/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/tex
-live/2011/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texli
-ve/2011/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive
-/2011/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on chris_brown_hw02.pdf (4 pages, 265383 bytes).
+ 44i,12n,47p,1560b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2011/texmf-dist/fonts/enc/dvi
+ps/cm-super/cm-super-t1.enc}{/usr/local/texlive/2011/texmf-dist/fonts/enc/dvips
+/cm-super/cm-super-ts1.enc}</usr/local/texlive/2011/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msam10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/
+public/cm-super/sfbx1000.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/pu
+blic/cm-super/sfbx1095.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/publ
+ic/cm-super/sfbx1440.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public
+/cm-super/sfrm0900.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/c
+m-super/sfrm1000.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/cm-
+super/sfrm1095.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/cm-su
+per/sfti1095.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/cm-supe
+r/sftt1095.pfb>
+Output written on chris_brown_hw02.pdf (5 pages, 276783 bytes).
 PDF statistics:
- 114 PDF objects out of 1000 (max. 8388607)
- 80 compressed objects within 1 object stream
+ 124 PDF objects out of 1000 (max. 8388607)
+ 87 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
