@@ -12,8 +12,8 @@
 %[images, labels] = flatten4D(trainImages, trainLabels, 1:nImages);
 % [m, V] = hw2FindEigendigits(images');
 
-nTest = 10000;
-eval(nTest);
+% nTest = 10000;
+% eval(nTest);
 
 % [testImages, testLabels] = flatten4D(trainImages, trainLabels, 50000:49999 + nTest);
 
@@ -46,12 +46,14 @@ eval(nTest);
 % fprintf('Tested %d images.\n', nTest);
 % fprintf('Success rate: %0.4f\n', sum(successes) / length(successes));
 
+subV = fullV;
 eigenvectors = ones(28*10 + 9, 28*10 + 9);
 for x=1:10
     for y=1:10
         insert_x = (x-1)*29+1;
         insert_y = (y-1)*29+1;
-        eigenvectors(insert_y:insert_y + 27,insert_x:insert_x + 27) = reshape(fullV(:,x + 10*(y-1)), 28, 28);
+        eigenvectors(insert_y:insert_y + 27,insert_x:insert_x + 27) = reshape(subV(:,x + 10*(y-1)), 28, 28);
     end
 end
-% imshow(eigenvectors*10);
+imshow(eigenvectors*10);
+export_fig plots/eigenvectors.pdf
