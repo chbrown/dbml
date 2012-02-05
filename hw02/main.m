@@ -6,8 +6,7 @@
 % show(images, 1046);
 
 % turnin to hychyc07
-%nImages = 2500; % = k
-%fprintf('Training on %d samples.\n', nImages);
+
 % size(trainImages) => 28          28           1       60000
 % images: each row is one image, the columns are pixels
 %[images, labels] = flatten4D(trainImages, trainLabels, 1:nImages);
@@ -16,25 +15,12 @@
 nTest = 10000;
 eval(nTest);
 
-
-
-
-% power(2, 1:15)
-
 % [testImages, testLabels] = flatten4D(trainImages, trainLabels, 50000:49999 + nTest);
 
 % imshow(results);
 % colormap(gray);
 % caxis
-img = image(results, 'CDataMapping', 'scaled'); % 'scaled' is important!
-set(gca, 'Color', 'none');
-ylabel('Number of training Images');
-set(gca,'YTick', 1:length(nImagesCandidates))
-set(gca, 'YTickLabel', nImagesCandidates); % ii / nImages
-xlabel('Top # of eigenvectors');
-set(gca,'XTick', 1:length(topNCandidates))
-set(gca, 'XTickLabel', topNCandidates); % jj / topNCandidates
-title(sprintf('Results for kNN, where k = %d', 10));
+
 % colorbar('YTickLabel', 0:100);
 % legend(img, 'First','Second','Third','Location','NorthEastOutside')
 % export_fig knn10smart.pdf

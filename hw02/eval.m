@@ -1,5 +1,5 @@
 % @2012 Christopher Brown (io@henrian.com), MIT licensed
-function eval(nTest, csv)
+function eval(nTest, csvFile)
 
 load hw2Data.mat;
 
@@ -32,4 +32,4 @@ for ii=1:length(nImagesCandidates)
     end
 end
 
-csvwrite(csv, results)
+csvwrite(csvFile, results)
