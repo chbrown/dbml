@@ -2,8 +2,8 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{henrian-more}
 \usepackage{subfig}
- 
-\makeLayout{Machine Learning: Homework 2}
+
+\makeHeaders{Machine Learning: Homework 2}
 
 \begin{document}
 
@@ -14,13 +14,26 @@
 
 \section{Algorithm}
 
-The PCA (Principal Component Analysis) algorithm is pretty straightforward, and the MATLAB implementation closely follows the general instructions. The \texttt{hw2FindEigendigits} function is a short 12 lines of code, and could be much shorter by embedding many of the functions. One complication (due to the original version of the assignment) was that sometimes the width of the matrix did not exceed the number of original dimensions of the data (784 in our case), and since the function was required to return a matrix the same size as the input image data, I found that padding it out with zeros was a suitable solution. In those cases where the number of training images was less than 748, truncating the eigenvector matrix to match that number was easy enough. Also, the assignment noted that the eigenvector matrix would need to be sorted by eigenvalues, but MATLAB's \texttt{eig} does that automatically, and only a reverse is needed. However, in line with the assignment, I still sort the eigenvalues and return the corresponding eigenvectors.
+The PCA (Principal Component Analysis) algorithm is pretty straightforward, and the MATLAB implementation closely follows the general instructions. My \texttt{hw2FindEigendigits} function is a short 12 lines of code, and could be much shorter by embedding many of the functions. One complication (due to the original version of the assignment) was that sometimes the width of the matrix did not exceed the number of original dimensions of the data (784 in our case), and since the function was required to return a matrix the same size as the input image data, I found that padding it out with zeros was a suitable solution. In those cases where the number of training images was less than 748, truncating the eigenvector matrix to match that number was easy enough. Also, the assignment noted that the eigenvector matrix would need to be sorted by eigenvalues, but MATLAB's \texttt{eig} does that automatically, and only a reverse is needed. However, in line with the assignment, I still sort the eigenvalues and return the corresponding eigenvectors. I have produced a sampling of eigenvectors in Figure \ref{fig:100eigenvectors} for different amounts of training data. The first few eigenvectors of each group seem intuitively reasonable, vaguely resembling the `0' shape that covers much of the space used by a digit. However, after the first ten or so, they seem to become random and hardly distinguishable.
 
 \begin{figure}[h]
   \centering
-  \subfloat[Using all training data]{\includegraphics[width=0.4\textwidth]{../plots/100eigenvectors.pdf}}                
-  \subfloat[Using 100 training images]{\includegraphics[width=0.4\textwidth]{../plots/100eigenvectors-short.pdf}}
-  \caption{The first 100 eigenvectors (ordered in rows, not columns)}
+  \subfloat[Using 25 training images]{
+    \makebox[0.3\textwidth]{
+      \includegraphics[height=0.3\textwidth]{../plots/eigenvectors-25.pdf}
+    }
+  }
+  \subfloat[Using 100 training images]{
+    \makebox[0.3\textwidth]{
+      \includegraphics[height=0.3\textwidth]{../plots/eigenvectors-100.pdf}
+    }
+  }
+  \subfloat[Using all training data (60,000 images)]{
+    \makebox[0.3\textwidth]{
+      \includegraphics[height=0.3\textwidth]{../plots/eigenvectors-60000.pdf}
+    }
+  }
+  \caption{The first 10 or 100 eigenvectors (ordered by rows, not columns)}
   \label{fig:100eigenvectors}
 \end{figure}
 
@@ -38,17 +51,20 @@ I tried out four basic evaluation metrics:
 Most of the computation time is spent evaluating each point relative to the training data. It's easy to project all the training/labeled data and the test data into the space of reduced dimensionality quickly, so I only had to do that once per choice of evaluation metric, number of training images, and number of top eigenvectors. But to evaluate a large group of test data, the algorithm would evaluate each one in term, analyzing the entirety of the training data to find the closest points.
 If speed was an issue, we could probably do some preprocessing on the training data to assign different regions of the PCA space certain labels, and then the test points could be queried against these regions, instead of all 60,000 training points.
 
-At first, I used kNN with k = 10 and took the most popular label from the resulting list. This ended up being slightly better than kNN with k = 1, since in some cases you can have a particularly sloppy `4' that looks a \emph{lot} like some other specific and also very sloppy `9,' but in general looks more like a `4' than a `9,' based on several other digits. That is, it takes out some of the anomalies. The advantages of this diminshes as we gain more training images, as the PCA space becomes more saturated with examples. But then I realized that this was naive, and that since the \texttt{knnsearch} function returns distances as well as a simple indexation, I could average the distance to all the `4' matches in the top 10, and all the `9' matches, for example, and take the shortest of those. This turned out not to really make a difference, but since it seemed to make more sense, I proceeded to use this metric (weighted kNN, k = 10) for the final analysis.
+At first, I used kNN with k = 10 and took the most popular label from the resulting list. This ended up being slightly better than kNN with k = 1, since in some cases you can have a particularly sloppy `4' that looks a \emph{lot} like some other specific and also very sloppy `9,' but in general looks more like a `4' than a `9,' based on several other digits. That is, it takes out some of the anomalies. The advantages of this diminishes as we gain more training images, as the PCA space becomes more saturated with examples. But then I realized that this was naive, and that since the \texttt{knnsearch} function returns distances as well as a simple indexation, I could average the distance to all the `4' matches in the top 10, and all the `9' matches, for example, and take the shortest of those. This turned out not to really make a difference, but since it seemed to make more sense, I proceeded to use this metric (weighted kNN, k = 10) for the final analysis.
 
 Cosine similarity (using \texttt{pdist2}, not the cosine option of \texttt{knnsearch}), gave me decent results, but it wasn't nearly as fast or successful as \texttt{knnsearch} using euclidean distances. Also, MATLAB warned me that my data did not seem entirely suitable for the cosine similarity metric, which is probably true.
 
+See Figure \ref{fig:metrics} for a comparison of these different metrics over a limited number of test images. (I only used 200 images in these plots, since evaluating 10,000 takes quite a bit of time.)
+
 \begin{figure}[h]
   \centering
-  \subfloat[1-NN]{\includegraphics[width=0.22\textwidth]{../plots/metrics-1nn.pdf}}                
-  \subfloat[10-NN majority vote]{\includegraphics[width=0.22\textwidth]{../plots/metrics-10nn-vote.pdf}}
-  \subfloat[10-NN weighted]{\includegraphics[width=0.22\textwidth]{../plots/metrics-10nn-weighted.pdf}}
-  \subfloat[Cosine similarity]{\includegraphics[width=0.22\textwidth]{../plots/metrics-cosine.pdf}}
-  \caption{Evaluation metrics}
+  \subfloat[1-NN]{\includegraphics[width=0.45\textwidth]{../plots/metrics-1nn.pdf}}\hfil
+  \subfloat[10-NN majority vote]{\includegraphics[width=0.45\textwidth]{../plots/metrics-10nn-vote.pdf}}
+
+  \subfloat[10-NN weighted]{\includegraphics[width=0.45\textwidth]{../plots/metrics-10nn-weighted.pdf}}\hfil
+  \subfloat[Cosine similarity]{\includegraphics[width=0.45\textwidth]{../plots/metrics-cosine.pdf}}
+  \caption{Evaluation metrics. The hotter the color, the more accurate that combination of top eigenvectors and number of test images.\\ Please note that these may look blurry due to the non-standard way Mac OS X Preview renders images. Use Adobe Acrobat to see a correct rendering.}
   \label{fig:metrics}
 \end{figure}
 
@@ -59,14 +75,19 @@ There are two variables we can plot accuracy on: the number of top eigenvectors 
 
 \begin{figure}[h]
   \centering
-  \subfloat[Easy 5,000]{\includegraphics[width=0.45\textwidth]{../plots/easy-5000.pdf}}                
-  \subfloat[Hard 5,000]{\includegraphics[width=0.45\textwidth]{../plots/hard-5000.pdf}}
-  \subfloat[All 10,000]{\includegraphics[width=0.90\textwidth]{../plots/all-10000.pdf}}
+  \subfloat[Easy 5,000]{\includegraphics[width=0.45\textwidth]{../plots/results-easy-5000.pdf}}
+  \subfloat[Hard 5,000]{\includegraphics[width=0.45\textwidth]{../plots/results-hard-5000.pdf}}
+
+  \subfloat[All 10,000]{\includegraphics[width=0.90\textwidth]{../plots/results-all-10000.pdf}}
   \caption{Results}
   \label{fig:results}
 \end{figure}
 
 We see that we can get pretty good results for as few as 500 training images while using just the top 50 eigenvectors. Perhaps the most interesting thing about these graphs is that for fewer training images, in the 100-10,000 range, it helps to truncate the eigenvectors, `de-noising' the data when transforming it into the PCA space, in a way. However, this advantage falls off as we simply use more and more training images (which is just another way of reducing noise in the training dataset).
+
+Overall, we achieved up to 93.28\% accuracy on the ``easy'' images (using the full test set, and the top 50 eigenvectors), and 97.18\% on the ``hard'' images. I didn't visually compare the different sets of the last 5,000 and first 5,000 of the 10,000 training images, so I must have accidentally put the last 5,000 results into the `easy' results. That or the assignment got the ordering backwards, because one would expect lower accuracy for the ``harder'' images.
+
+
 
 \end{document}
 

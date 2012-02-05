@@ -1,9 +1,8 @@
 % @2012 Christopher Brown (io@henrian.com), MIT licensed
-function evaluate(nTest, csvFile)
+function evaluate(testIndices, csvFile)
 
-nTest = 100;
-testIndices = 1:nTest;
-csvFile = 'tmp-1.csv';
+% testIndices = 1:100;
+% csvFile = 'tmp-1.csv';
 
 load hw2Data.mat;
 

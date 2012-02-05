@@ -46,14 +46,62 @@
 % fprintf('Tested %d images.\n', nTest);
 % fprintf('Success rate: %0.4f\n', sum(successes) / length(successes));
 
-subV = fullV;
-eigenvectors = ones(28*10 + 9, 28*10 + 9);
-for x=1:10
-    for y=1:10
+plotCsvFile('metrics-1nn.csv', 1)
+export_fig plots/metrics-1nn.pdf -transparent
+
+plotCsvFile('metrics-10nn-vote.csv', 1)
+title(sprintf('kNN, where k = %d (majority vote)', K));
+export_fig plots/metrics-10nn-vote.pdf -transparent
+
+plotCsvFile('metrics-10nn-weighted.csv', 1)
+title(sprintf('kNN, where k = %d (weighted)', 10));
+export_fig plots/metrics-10nn-weighted.pdf -transparent
+
+plotCsvFile('metrics-cosine.csv', 1)
+title(sprintf('Cosine similarity'));
+export_fig plots/metrics-cosine.pdf -transparent
+
+plotCsvFile('results-easy5000.csv', 0)
+title('Easy 5000');
+export_fig plots/results-easy-5000.pdf -transparent
+
+plotCsvFile('results-hard5000.csv', 0)
+title('Hard 5000');
+export_fig plots/results-hard-5000.pdf -transparent
+
+
+
+rows = 10;
+cols = 1;
+indices = reshape(1:(rows * cols), cols, rows)';
+eigenvectors = ones(28*rows + (rows - 1), 28*cols + (cols - 1));
+for x=1:cols
+    for y=1:rows
         insert_x = (x-1)*29+1;
         insert_y = (y-1)*29+1;
-        eigenvectors(insert_y:insert_y + 27,insert_x:insert_x + 27) = reshape(subV(:,x + 10*(y-1)), 28, 28);
+        image = reshape(fullV(:,indices(y, x)), 28, 28);
+        eigenvectors(insert_y:insert_y + 27, insert_x:insert_x + 27) = image;
     end
 end
 imshow(eigenvectors*10);
-export_fig plots/eigenvectors.pdf
+export_fig plots/eigenvectors-25.pdf -transparent
+
+
+% convert to-do csv to results matrix
+todo = csvread('hard5000-test.csv');
+results = zeros(length(nImagesCandidates), length(topNCandidates));
+for line=1:size(todo, 1)
+    nImages = todo(line, 1);
+    topN = todo(line, 2);
+    result = todo(line, 3);
+    
+    nImagesCandidates = [1 2 5 10 25 50 75 100 250 500 1000 5000 10000 30000 50000];
+    nImagesIndices = 1:length(nImagesCandidates);
+    nImageIndex = nImagesIndices(nImagesCandidates==nImages);
+    topNCandidates = [1 2 5 10 25 50 75 100 250 500 750 1000];
+    topNIndices = 1:length(topNCandidates);
+    topNIndex = nImagesIndices(topNCandidates==topN);
+    
+    results(nImageIndex, topNIndex) = result;
+end
+csvwrite('results-hard5000.csv', results);

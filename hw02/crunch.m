@@ -3,6 +3,8 @@
 %   matlab -r crunch('easy5000-test.csv', 1:5000)
 %   matlab -r crunch('hard5000-test.csv', 5000:10000)
 %   matlab -r crunch('all10000-test.csv', 1:10000)
+% because I don't know how to do multi-processor code in MATLAB or submit
+% jobs to Condor, but I do know how to ssh in and restart a job
 function crunch(csvPath, testIndices)
 
 load hw2Data.mat;
@@ -36,5 +38,6 @@ for line=1:size(todo, 1)
     end
 end
 
+% to create the todo files:
 % [p,q] = meshgrid(nImagesCandidates, topNCandidates);
 % pairs = [p(:) q(:)];
