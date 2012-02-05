@@ -1,12 +1,15 @@
 % @2012 Christopher Brown (io@henrian.com), MIT licensed
-function evaluate(nTest, csvFile)
+function evaluate(testIndices, csvFile)
+
+% testIndices = 1:100;
+% csvFile = 'tmp-1.csv';
 
 load hw2Data.mat;
 
-nImagesCandidates = [1 2 5 10 25 50 75 100 250 500 1000 5000 10000 30000 50000];
+nImagesCandidates = [1 2 5 10 25 50 75 100 250 500 1000 5000 10000 30000 60000];
 topNCandidates = [1 2 5 10 25 50 75 100 250 500 750 1000];
 
-[testImages, testLabels] = flatten4D(testImages, testLabels, 1:nTest);
+[testImages, testLabels] = flatten4D(testImages, testLabels, testIndices);
         
 results = zeros(length(nImagesCandidates), length(topNCandidates));
 for ii=1:length(nImagesCandidates)

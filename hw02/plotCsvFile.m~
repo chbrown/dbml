@@ -18,5 +18,22 @@ set(gca, 'XTickLabel', topNCandidates); % jj / topNCandidates
 title(sprintf('Results for kNN, where k = %d', K));
 colorbar
 
+scrsz = get(0,'ScreenSize');
+% set(gca, 'Position', [1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2]);
+
 % export_fig plots/eigenvectors.pdf -transparent
 
+plotCsvFile('metrics-1nn.csv', 1)
+export_fig plots/metrics-1nn.pdf -transparent
+
+plotCsvFile('metrics-10nn-vote.csv', 1)
+title(sprintf('kNN, where k = %d (majority vote)', K));
+export_fig plots/metrics-10nn-vote.pdf -transparent
+
+plotCsvFile('metrics-10nn-weighted.csv', 1)
+title(sprintf('kNN, where k = %d (weighted)', 10));
+export_fig plots/metrics-10nn-weighted.pdf -transparent
+
+plotCsvFile('metrics-cosine.csv', 1)
+title(sprintf('Cosine similarity'));
+export_fig plots/metrics-cosine.pdf -transparent
