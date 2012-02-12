@@ -101,7 +101,7 @@ A vector multiplied by its transpose is a sum of squares:
     x_1 \\ x_2 \\ x_3 \\ x_4
   \end{bmatrix}
   =
-  x_1x_1 + x_2x_2 + x_3x_3 + x_4x_4
+  x_1^2 + x_2^2 + x_3^2 + x_4^2
 \]
 We're only dealing with real numbers, so our squares must be non-negative. But we've also asserted that our vector $x$ is non-zero, so the sum of our squares must be positive (non-zero). We declare that $c = x^Tx$,
 \[ c\lambda > 0 \]
@@ -148,7 +148,7 @@ Factor out $(D + CA^{-1}B)^{-1}$:
   A + B(
       D^{-1}
       - (D + CA^{-1}B)^{-1}
-        (1 + CA^{-1}BD^{-1})
+        (I + CA^{-1}BD^{-1})
       )C
 )\]
 And inject a $DD^{-1}$:
@@ -156,7 +156,7 @@ And inject a $DD^{-1}$:
   A + B(
       D^{-1}
       - (D + CA^{-1}B)^{-1}
-        (1 + CA^{-1}BD^{-1})DD^{-1}
+        (I + CA^{-1}BD^{-1})DD^{-1}
       )C
 )\]
 And distribute towards the left:
@@ -177,7 +177,7 @@ The $D^{-1}D$ cancels to $I$:
 )\]
 And $(D + CA^{-1}B)^{-1}(D + CA^{-1}B)$ also cancels to $I$:
 \[ I \overset{?}{=}
-  (A^{-1})(A + B(D^{-1} - D^{-1})C
+  (A^{-1})(A + B(D^{-1} - D^{-1})C)
 \]
 I'll multiply it out, just to be clear. First, $A^{-1}$:
 \[ I \overset{?}{=}
@@ -206,6 +206,81 @@ Add $A^{-1}BD^{-1}C$ to both sides, and the equality is obvious.
 % \[ \frac{\partial ln|A| \partial |A|}{\partial |A| \partial A} \]
 
 \section{Lagrange Can}
+
+For a can of radius $r$ and height $h$, we want to pick the $r$ and $h$ that maximize volume,
+\[V = \pi r^2h\]
+while constraining surface area to a given constant.
+
+Because `can' suggests that the intended solid is not precisely a cylinder, I will proceed under the assumption that the solid in question is a hollow cylinder with one end missing. Of course, this only affects surface area, not volume. For simplicity, I'll assume the walls of the solid are infinitely thin.
+\[ A = \pi r^2 + 2\pi rh \]
+Each surface could be multiplied by two for the inside and outside of the same wall, but the end result would be the same (we would just have to divide $A$ by 2 before we use it), so I will stick with counting only the outside surfaces.
+
+The constraint means that, since we know $A$, given $r$, we can determine $h$ (or given $h$, we can determine $r$). Now we have:
+\begin{align*}
+  \underset{r,h}{\text{max}}\; V = \pi r^2h & & \text{subject to} & & \pi r^2 + 2\pi rh = A
+\end{align*}
+One constraint means one Lagrange multiplier. We set up the optimization equation:
+\[
+  \underset{r,h,\lambda}{\text{max}}\;V = \pi r^2h + \lambda(\pi r^2 + 2\pi rh - A)
+\]
+Now we differentiate:
+\begin{align*}
+  V_h' &= \pi r^2 + 2\pi\lambda r &= 0 &= r + 2\lambda \\
+  V_r' &= 2\pi rh + 2\pi\lambda r + 2\pi\lambda h &= 0 &= rh + \lambda r + \lambda h \\
+  V_\lambda' &= \pi r^2 + 2\pi rh - A &= 0 &
+\end{align*}
+So from the first and second equations we have:
+\begin{align*}
+  r &= -2\lambda \\
+  h &= \frac{-\lambda r}{r + \lambda}
+\end{align*}
+Merging the first and second equations produces:
+\[
+  h = -2\lambda
+\]
+And substituting these values of $r$ and $h$ into the final equation produces
+\[
+  0 = 4\pi\lambda^2 + 8\pi\lambda^2 - A = 12\pi\lambda^2 - A
+\]
+Which rearranges into
+\begin{align*}
+  12\pi\lambda^2 = A & & \text{and} & & \lambda = \sqrt{\frac{A}{12\pi}}
+\end{align*}
+% at this point, \lambda = \sqrt{\frac{A}{24\pi}} for the unopen can scenario
+Multiplying this back into the equations for $r$ and $h$, we get
+\[
+  r = h = -2\sqrt{\frac{A}{12\pi}}
+\]
+It's absurd to have negative dimensions, but let's continue, to derive the volume:
+\[
+  V = - \frac{2A}{3}\sqrt{\frac{A}{12\pi}}
+\]
+Yep, it's still kind of strange, so apparently it \emph{is} important to subtract the Lagrangian component when maximizing, instead of adding. (And now I'm perplexed why the box example in class (Feb. 6) worked out just fine by adding, even though it was a maximization problem, too.)
+
+In which case we have:
+\[ \underset{r,\lambda}{\text{max}}\;V = \pi r^2h - \lambda(\pi r^2 + 2\pi rh - A) \]
+And:
+\begin{align*}
+  V_h' &= \pi r^2 - 2\pi\lambda r                 &= 0 &= r - 2\lambda \\
+  V_r' &= 2\pi rh - 2\pi\lambda r - 2\pi\lambda h &= 0 &= rh - \lambda r - \lambda h \\
+  V_\lambda' &= - \pi r^2 - 2\pi rh + A           &= 0 &= \pi r^2 + 2\pi rh - A
+\end{align*}
+And:
+\[ r = h = 2\lambda \]
+And substituting into the third equation gives us the same $\lambda$,
+\[ \lambda = \sqrt{\frac{A}{12\pi}} \]
+But now of course we'll get positive $r$ and $h$ values:
+\[ r = h = 2\sqrt{\frac{A}{12\pi}} \]
+And a reasonable volume:
+\[ V = \frac{2A}{3}\sqrt{\frac{A}{12\pi}} \]
+For the \emph{un}opened can scenario, $r = 2\lambda$ and $h = 4\lambda$, and $\lambda = \sqrt{\frac{A}{24\pi}}$.
+In which case
+\[ V = 
+      \pi \left(2\sqrt{\frac{A}{24\pi}}\right)^2 \left(4\sqrt{\frac{A}{24\pi}}\right) =
+      \frac{2A}{3}\sqrt{\frac{A}{24\pi}}
+ \]
+
+
 
 
 
