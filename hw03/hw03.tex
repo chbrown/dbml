@@ -1,0 +1,247 @@
+\documentclass[11pt]{report}
+\usepackage[pdftex]{graphicx}
+\usepackage{henrian-more}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{rotating}
+\usepackage{float}
+
+\makeHeaders{Machine Learning: Homework 3}
+
+\begin{document}
+
+\begin{itemize}
+  \item \textbf{Email}: chrisbrown@utexas.edu
+  \item \textbf{EID}: chb595
+\end{itemize}
+
+\section{Inverse Transpose}
+
+I will show that
+\[ \frac{ \partial ln|A| }{ \partial A } = (A^{-1})^T \]
+
+% Note that $(A^{-1})^T = (A^T)^{-1}
+
+% Multiply the term on the left side of the equation by 1:
+
+We'll name $|x|$ the function $g(x)$, and $ln(x)$ the function $f(x)$, and declaring $F(x) = f(g(x))$, the chain rule says that $\frac{F'(x)}{x'} = \frac{f'(g(x))}{g'} \frac{g'(x)}{x'}$.
+
+Thus the term on the left side of the equation, $\frac{\partial(f(g(A)))}{\partial A}$ derives to:
+
+\[ \frac{\partial f(g(A))}{\partial g(A)} \frac{\partial g(A)}{\partial A} \]
+
+And back in the original terms:
+
+\[ \frac{\partial ln|A|}{\partial |A|} \frac{\partial |A|}{\partial A} \]
+
+Now since $\frac{d}{dx} ln x = \frac{1}{x}$, and since $\partial [constant] = 1$, and $|A|$ is just a constant, we just get:
+
+\[ \frac{1}{|A|} \frac{\partial |A|}{\partial A} \]
+
+The fraction on the right hand side can alternatively be notated: $\nabla_A |A|$, or written out as:
+
+\[
+\begin{bmatrix}
+  \frac{\partial |A|}{\partial A_{11}} & \frac{\partial |A|}{\partial A_{12}} & \cdots \\
+  \frac{\partial |A|}{\partial A_{21}} & \ddots & \cdots \\
+  \vdots & \vdots & \frac{\partial |A|}{\partial A_{mn}} \\
+\end{bmatrix}
+\]
+
+As in Andrew Ng's course notes, we define the adjoint as
+$(\text{adjoint}(A))_{ij} = (-1)^{i+j}|A_{\backslash j,\backslash i}|$.
+
+And keep that definition of the determinant:
+$|A| = \sum^n_{i=1} a_{ij} (-1)^{i+j}|A_{\backslash i,\backslash j}|$
+
+Let's transpose the determinant in the definition of the adjoint:
+$(\text{adjoint}(A))_{ij} = (-1)^{i+j}|(A^T)_{\backslash i,\backslash j}|$
+
+Which of course we can rewrite as:
+$(\text{adjoint}(A^T))_{ij} = (-1)^{i+j}|(A)_{\backslash i,\backslash j}|$.
+
+And so we can redefine the determinant as:
+$|A| = \sum^n_{i=1} a_{ij} \text{adjoint}(A^T)$
+
+And now it's relatively clear why $\nabla_A |A| = \text{adjoint}(A)$
+% xxx clarify...
+% (My intuition about it is that
+
+
+
+% By definition, $|I| = 1$, and so $|AA^{-1}| = 1$, and we've also assumed that $|A||B| = |AB|$, so we see that $|A||A^{-1}| = 1$.
+
+By definition of the determinant, $\text{adjoint}(A)A = |A|I$. % A\text{adjoint}(A) =
+This can be reordered: $\text{adjoint}(A)A = |A|I$ $\rightarrow$ $\frac{\text{adjoint}(A)A}{|A|} = I$ and since $|A|$ is a scalar, it doesn't really matter where it goes. Then we get $\frac{\text{adjoint}(A)AA^{-1}}{|A|} = IA^{-1}$ $\rightarrow$ $\frac{\text{adjoint}(A)}{|A|} = A^{-1}$.
+
+Now since $\nabla_A |A| = \text{adjoint}(A)$, we get $\frac{\nabla_A |A|}{|A|} = A^{-1}$.
+
+\section{Positive eigenvalues}
+
+% For a matrix $A$, eigenvalues $\Lambda$, and eigenvectors $X$, by definition:
+% \[ AX = X\Lambda \]
+For a matrix $A$ and any eigenvector $x$ and eigenvalue $\lambda$:
+\[ Ax = \lambda x \]
+A (square) positive definite matrix $A$ is defined as: $x^TAx > 0$, where $x$ is any vector of the same width as $A$ (and $x$ is non-zero).
+We wish to show that if $x$ is an eigenvector of $A$, which is positive definite, then the corresponding eigenvalue $\lambda$ is positive.
+
+First, multiply both sides of the eigenvector equation by $x^T$:
+\[ x^TAx = x^T\lambda x \]
+Because we presume that $A$ is positive definite, and we are dealing with non-zero eigenvectors ($x$), we see that the left side of this equation must be greater than zero, and so must be the right side:
+\[ x^T\lambda x > 0 \]
+Now, since $\lambda$ is just a scalar number, we can move it over:
+\[ x^Tx\lambda > 0 \]
+A vector multiplied by its transpose is a sum of squares:
+\[
+  \begin{bmatrix}
+    x_1 & x_2 & x_3 & x_4
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_1 \\ x_2 \\ x_3 \\ x_4
+  \end{bmatrix}
+  =
+  x_1x_1 + x_2x_2 + x_3x_3 + x_4x_4
+\]
+We're only dealing with real numbers, so our squares must be non-negative. But we've also asserted that our vector $x$ is non-zero, so the sum of our squares must be positive (non-zero). We declare that $c = x^Tx$,
+\[ c\lambda > 0 \]
+And since we've shown that $c > 0$, divide both sides by $c$, and we're done:
+\[ \lambda > 0 \]
+Of course, this works for any eigenvalue $\lambda$, since it works for the general case.
+
+
+\section{Matrix Algebra}
+
+We will show:
+\[ (A + BD^{-1}C)^{-1} = A^{-1} - A^{-1}B(D + CA^{-1}B)^{-1}CA^{-1} \]
+Begin by multiplying both sides by $(A + BD^{-1}C)$
+\[ (A + BD^{-1}C)^{-1}(A + BD^{-1}C) \overset{?}{=} (A^{-1} - A^{-1}B(D + CA^{-1}B)^{-1}CA^{-1})(A + BD^{-1}C) \]
+The left side reduces to unity:
+\[ I \overset{?}{=} (A^{-1} - A^{-1}B(D + CA^{-1}B)^{-1}CA^{-1})(A + BD^{-1}C) \]
+Factor out the $A^{-1}$ on the right side:
+\[ I \overset{?}{=} (A^{-1})
+  (1 - B(D + CA^{-1}B)^{-1}CA^{-1})
+  (A + BD^{-1}C)
+\]
+Now distribute the $(A + BD^{-1}C)$ term.
+\[ I \overset{?}{=} (A^{-1})(
+  A + BD^{-1}C
+  - B(D + CA^{-1}B)^{-1}CA^{-1}A
+  - B(D + CA^{-1}B)^{-1}CA^{-1}BD^{-1}C
+)\]
+Simplify out $A^{-1}A$.
+\[ I \overset{?}{=} (A^{-1})(
+  A + BD^{-1}C
+  - B(D + CA^{-1}B)^{-1}C
+  - B(D + CA^{-1}B)^{-1}CA^{-1}BD^{-1}C
+)\]
+Factor out $B$ to the left, and $C$ to the right.
+\[ I \overset{?}{=} (A^{-1})(
+  A + B(
+      D^{-1}
+      - (D + CA^{-1}B)^{-1}
+      - (D + CA^{-1}B)^{-1}CA^{-1}BD^{-1}
+      )C
+)\]
+Factor out $(D + CA^{-1}B)^{-1}$:
+\[ I \overset{?}{=} (A^{-1})(
+  A + B(
+      D^{-1}
+      - (D + CA^{-1}B)^{-1}
+        (1 + CA^{-1}BD^{-1})
+      )C
+)\]
+And inject a $DD^{-1}$:
+\[ I \overset{?}{=} (A^{-1})(
+  A + B(
+      D^{-1}
+      - (D + CA^{-1}B)^{-1}
+        (1 + CA^{-1}BD^{-1})DD^{-1}
+      )C
+)\]
+And distribute towards the left:
+\[ I \overset{?}{=} (A^{-1})(
+  A + B(
+      D^{-1}
+      - (D + CA^{-1}B)^{-1}
+        (D + CA^{-1}BD^{-1}D)D^{-1}
+      )C
+)\]
+The $D^{-1}D$ cancels to $I$:
+\[ I \overset{?}{=} (A^{-1})(
+  A + B(
+      D^{-1}
+      - (D + CA^{-1}B)^{-1}
+        (D + CA^{-1}B)D^{-1}
+      )C
+)\]
+And $(D + CA^{-1}B)^{-1}(D + CA^{-1}B)$ also cancels to $I$:
+\[ I \overset{?}{=}
+  (A^{-1})(A + B(D^{-1} - D^{-1})C
+\]
+I'll multiply it out, just to be clear. First, $A^{-1}$:
+\[ I \overset{?}{=}
+  A^{-1}A + A^{-1}B(D^{-1} - D^{-1})C
+\]
+Simplify the left term, distribute the right:
+\[ I \overset{?}{=}
+  I + A^{-1}BD^{-1}C - A^{-1}BD^{-1}C
+\]
+Subtract $I$ from both sides:
+\[ 0 \overset{?}{=}
+  A^{-1}BD^{-1}C - A^{-1}BD^{-1}C
+\]
+Add $A^{-1}BD^{-1}C$ to both sides, and the equality is obvious.
+\[ A^{-1}BD^{-1}C = A^{-1}BD^{-1}C \]
+
+
+% Simplify:
+% \[ I \overset{?}{=} 1 + A^{-1}BD^{-1}C - A^{-1}B(D + CA^{-1}B)^{-1}C - A^{-1}B(D + CA^{-1}B)^{-1}CA^{-1}BD^{-1}C \]
+
+
+% \[ \frac{\partial ln|A|}{\partial A} \dot \frac{\partial |A|}{\partial |A|} \]
+
+% Because $\partial |A|$ is just a scalar number, we can move it over the matrix $\partial A$:
+
+% \[ \frac{\partial ln|A| \partial |A|}{\partial |A| \partial A} \]
+
+\section{Lagrange Can}
+
+
+
+
+
+
+
+\section{Cost + Reward function optimization}
+
+We begin with the dynamic equation (acceleration is a function of gas applied at some time):
+
+\[ \ddot{x} = u(t) \]
+
+and initial conditions (which just say we start at the beginning, with a speed of zero):
+
+\[ x = 0 \]
+\[ \dot{x} = 0 \]
+
+and the reward - cost function:
+
+\[ J = x(T) -  \int^T_0 u^2(t) dt \]
+
+In that equation, $x(T)$ represents the distance traveled at time $T$ (the bigger the better). And $\frac{1}{2} u^2(t)$ represents the acceleration (amount of gas) applied at point $t$, and the integration of that function from time = 0 to time = $T$ is the total amount of power (= gas) used between the starting point and the end time, but squared in order to encourage a gradual application of power.
+
+$\dot{x}$ is a vector, which consists of two scalars, which correspond to the derivatives of position and velocity:
+
+\[
+  \begin{pmatrix}
+    \dot{x}_1\\
+    \dot{x}_2
+  \end{pmatrix}
+  \begin{pmatrix}
+    x_2\\
+    \dot{x}_2
+  \end{pmatrix}
+\]
+
+
+\end{document}

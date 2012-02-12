@@ -8,7 +8,9 @@
 % invert = @(images, index) image(255 - reshape(images(index,:), 28, 28));
 % show(images, 1046);
 
-% turnin to hychyc07
+call:
+turnin --submit hychyc07 hw2 cosineDistance.m crunch.m evaluate.m flatten4D.m knnDistance.m main.m plotCsvFile.m chris_brown_hw02.pdf
+turnin --list hychyc07 hw2
 
 % size(trainImages) => 28          28           1       60000
 % images: each row is one image, the columns are pixels
