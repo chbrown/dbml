@@ -1,0 +1,15 @@
+function [W, Ws, Y] = ica(X, n )
+m = size(X, 1);
+W = rand(n, m) / 100;
+Ws = zeros(R_max, length(W(:)));
+for i=1:R_max
+    Y = W * X; % [3 44000]
+    Z = 1 ./ (1 + exp(-Y));
+    inner = (1 - 2*Z) * Y';
+    deltaW = eta .* ((eye(size(inner)) + inner) * W);
+    W = W + deltaW;
+    Ws(i,:) = W(:)';
+end
+
+end
+
