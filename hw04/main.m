@@ -6,7 +6,7 @@
 % function main(indices, A, R_max, eta)
 indices = 1:5;
 A = [5 1 2 1 3; 3 1 6 1 0; 2 7 3 1 4; 1 5 4 8 2; 4 0 1 4 7];
-A = rand(2, 5);
+% A = rand(2, 5);
 eta = 0.01;
 load sounds.mat; % [5 44000] = size(sounds)
 U = sounds(indices,:); % [3 44000]

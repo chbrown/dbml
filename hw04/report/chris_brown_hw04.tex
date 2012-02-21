@@ -19,33 +19,33 @@
 
 The ICA (Independent Component Analysis) algorithm is even simpler to implement than the PCA algorithm. But because it is iterative, it is not as fast or, in my opinion, elegant.
 
-Our purely separated source data, $U$ (for \textbf{U}nmixed), is a ($n$-long) list of ($t$-long) lists of measurements of air pressure at evenly spaced intervals. We use a ($m$ by $n$) matrix, $A$, to mix these $n$ signal streams into a $m$-long list of these audio streams. $AU$ then produces a new matrix $X$, which is as wide as $U$, but with different rows. One can imagine that the $U$ audio streams are omni-directional speakers placed around a room, and the values of $X$ are omni-directional microphones placed around the same room.
+Our purely separated source data, $U$ (for \textbf{U}nmixed), is a $n$-long list of $t$-long vectors of measurements of air pressure at evenly spaced intervals. We use a ($m$ by $n$) matrix, $A$, to mix these $n$ signal streams into $m$ lists of these audio streams. $AU$ then produces a new matrix $X$, which is as wide as $U$, but with different rows. One can imagine that the $U$ audio streams are omni-directional speakers placed around a room, and the values of $X$ are omni-directional microphones placed around the same room.
 
 If speaker/microphone scenario were actually the task at hand, we would also want to factor the speed of sound into our model, since by triangulating the positions of the speakers in parallel with the source separation task, we could use our presumption of independent sources to require that these sources also be reducible to single points in physical space. But one can easily appreciate the amount of extra complexity this model would require. For this homework, all spatial relations are reduced to the effect of the mixture matrix $A$.
 
 After producing $X$, the task is to retrieve values as close to $U$ as possible, purely on the basis of the streams in $X$, and a pretty big assumption: that we know the number of original sources, $n$. We try to infer the original $U$ by iteratively guessing a $W$, which is basically the reverse of $A$---it takes us from the observed mixture to the (presumed) independent sources, $Y$.
 
-Convergence was much, much quicker than the 1,000,000 mentioned in the assignment. Rarely did convergence take longer 1000 iterations, and when it did take longer, the cause was either a reluctant initial choice of $W$ or very low learning rate $\eta$. Several choices of $\eta$ are shown in Figures \ref{fig:eta5}, \ref{fig:eta01}, and \ref{fig:eta001}.
+Convergence was much, much quicker than the 1,000,000 mentioned in the assignment (which was even for a much smaller data set). Rarely did convergence take longer 1,000 iterations, and when it did take longer, the cause was either a reluctant (very small) initial choice of $W$ or a tiny learning rate $\eta$ (smaller than 0.01). Several choices of $\eta$ are shown in Figures \ref{fig:eta5}, \ref{fig:eta01}, and \ref{fig:eta001}.
 
 \begin{figure}[H]
   \centering
-  \subfloat[$\eta$: .5]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-5a.pdf}}
-  \subfloat[$\eta$: .1]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-1a.pdf}}
-  \caption{$W$ convergence for large $\eta$.}
+  \subfloat[$\eta = .5$]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-5a.pdf}}
+  \subfloat[$\eta = .1$]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-1a.pdf}}
+  \caption{$W$ convergence for large $\eta$. The different lines are values for each of the nine components of the $3 \times 3$ matrix $W$.}
   \label{fig:eta5}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat[$\eta$: Run 1]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-01a.pdf}}
-  \subfloat[$\eta$: Run 2]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-01b.pdf}}
+  \subfloat[Run 1]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-01a.pdf}}
+  \subfloat[Run 2]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-01b.pdf}}
   \caption{$W$ convergence for $\eta$: 0.01.}
   \label{fig:eta01}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat[$\eta$: Run 1]{\includegraphics[width=0.48\textwidth]{../plots/learning-eta-001.pdf}}
+  \includegraphics[width=0.48\textwidth]{../plots/learning-eta-001.pdf}
   \caption{$W$ convergence for very small $\eta$ (but somewhat larger initial $W$).}
   \label{fig:eta001}
 \end{figure}
@@ -57,7 +57,7 @@ Quantitative evaluation is somewhat arbitrary, since we have no recognized stand
 
 We can draw out simplified (smoothed) waveforms for each channel, mixture, and inferred output, as in Figure \ref{fig:a}.
 
-% HW4 says, "See how well you can recover the original signals over several trials." You should evaluate the recovered signals visually, by plotting them, but also quantitatively. You can compute the quality of a reconstructed signal as the minimum distance to one of the original signals. (You have to do this because you don't know which reconstruction corresponds to which original.) 
+% HW4 says, "See how well you can recover the original signals over several trials." You should evaluate the recovered signals visually, by plotting them, but also quantitatively. You can compute the quality of a reconstructed signal as the minimum distance to one of the original signals. (You have to do this because you don't know which reconstruction corresponds to which original.)
 
 \begin{figure}[H]
   \centering
@@ -88,7 +88,7 @@ However, it's hard to see exactly how these line up, so we can overlay the infer
 \end{figure}
 The (best case) total cosine similarity mean (after correction) for the three channels in Figure \ref{fig:b} is 0.218.
 
-Using all five sources of audio signals, and mixing over five channels produced the plot in Figure \ref{fig:c}, for which the mean cosine similarity was 0.173.
+Using all five sources of audio signals, and mixing over five channels produced the plot in Figure \ref{fig:c}, for which the mean cosine similarity was 0.173, apparently even more accurate than 3-over-3 case directly above.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{../plots/goodmatch5.pdf}
@@ -123,6 +123,7 @@ Finally, the result of mixing five input channels into just two `microphones' ha
   \caption{Five channel input--two channel mixture, 10 runs, fully randomized.}
   \label{fig:f}
 \end{figure}
+Listening to the output for some of these results, it sounds like the algorithm works quite well; the inferred $Y$ sources are considerably easier to listen to than the cacophonous mixture $X$. But some of the time, one of the outputs will retain a mixture of, say, two of the three inputs, so the algorithm is not perfectly effective.
 
 \section{Notes}
 
@@ -130,7 +131,11 @@ One problem I came up against was that if my initial random values of $W$ were n
 
 The algorithm is best (least random) at discerning the source for areas of particular volume. The fourth row in the original data (the wheezing laugh), is the most retrievable of any of the signals.
 
+As I asked Dana in Monday's (February 20) class, it seems to me that there ought to be some metric for evaluating the relative worth of different random restarts, before we use the gold data to establish a final evaluation figure. If we are simply comparing all of our tries and picking the best one, we could achieve amazing results with completely random data, given enough time. That is, once we put the inference algorithm into practice, we aren't going to be able to compare our random restarts with some gold standard and pick the best one. So it seems that there ought to be some way of evaluating different runs, for the same audio mixture $X$, but since our only evaluation metric uses $U$, in this case, I don't know how to do this.
 
+\subsection{Something Neat that I Learned}
+
+Actually, I want to mention Something Neat that I Keep Realizing, which is that it is extremely nice to use programming languages in which functions are first class citizens. MATLAB, which relegates functions to individual files, is not one of these. Again and again I find it inconvenient to create a new file just so I can, for example, draw a plot with a few parameters, or normalize a vector to lie between 0 and 1 (also, variables in that file default to being non-global, making debugging difficult). Perhaps there is a MATLAB function that does the same thing as my \texttt{normalize01}, but it is not easy to find, and the operation is so simple that it's by far easier just to rewrite it than find the built-in function. But why does a three line function need to be in its own file? I think this limitation / design choice in the MATLAB language encourages un-reusable code, e.g. for-loops when the correct choice is a function and functional application over a vector. I know of MATLAB's @anonymous(x) x; syntax, but the one-statement limitation doesn't allow a lot of uses. Also, scope/closure handling in the anonymous function is very strange.
 
 % \begin{figure}[H]
 %   \centering
