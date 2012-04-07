@@ -3,4 +3,5 @@ misc/
 *.m~
 *.aux
 *.log
+*.out
 scans/
