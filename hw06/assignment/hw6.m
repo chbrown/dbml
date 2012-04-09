@@ -153,7 +153,7 @@ bar(difs);
 title('Performance of approximate inference on random problems');
 xlabel('Problem number');
 set(gca,'XTick', 1:numProblems);
-set(gca, 'YTickLabel', num2str(get(gca, 'YTick'), '%0.5f'))
+set(gca, 'YTickLabel', num2str(difs, '%0.5f'));
 ylabel('P_{exact} - P_{approx}');
 print('-dpng','hw6-plot.png')
 
