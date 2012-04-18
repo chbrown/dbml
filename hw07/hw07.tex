@@ -24,12 +24,14 @@
 
 Figuring out how to quantify the state spaces was the hardest part of the assignment. For the obstacle module, I ended up assigning one label to every combination of adjacent (up/down/left/right) squares that were occupied with obstacles (12, plus 1 for the case where there are no adjacent obstacles).
 
-For the state space of the finish module, there is only one state: the one where you try to get to the end. I thought about having something like a \texttt{floor(log(distance-from-end))} state space; which would allow the learner to worry less about speed if the end of the sidewalk was far off. This actually just made the finish module slower, and didn't make sense in this problem, so I didn't not include this subtlety in the finished product.
+For the state space of the finish module, there is only one state: the one where you try to get to the end. I thought about having something like a \texttt{floor(log(distance-from-end))} state space; which would allow the learner to worry less about speed if the end of the sidewalk was far off. This actually just made the finish module slower, and didn't make sense in this problem, so I did not include this subtlety in the finished product.
 
 I played around with different dimensions of sidewalks and obstacles density, as well as Q-learning algorithm parameters; the results below are each labeled with the parameters.
 
 In each of the plot titles, a means the alpha parameter, g means the discount parameter, and e means the epsilon parameter.
 For interpretability of results, I have set the reward for finishing equal to the length of the sidewalk. I played around the amount of the penalty. But for most of the runs below, the penalty was around $-10$.
+
+One problem I ran into pretty quickly was the low epsilon default; at 0.9, we get results that don't seem nearly as good as they ought to be:
 
 \begin{figure}[H]
   \centering
@@ -47,22 +49,23 @@ For interpretability of results, I have set the reward for finishing equal to th
 
 \noindent In Figure \ref{fig:ep099}, for example, we get much better results giving the algorithm high confidence in what it should do at each step, instead of sometimes doing something randomly.
 
-
 Figuring out appropriate weights for each module's Q was hard, and I may still not have gotten the best weights. This should be part of the learning algorith, I think. The individual episodes should train the Q's, and the merged episodes should train the weights. I did have time to implement this, unfortunately.
+
+In the next two graphs, I show different weightings; the second skews dramatically towards preferring the obstacle-avoidance module.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{results/qlearn-s120x3-o10.pdf}
-  \caption{weight = 5/1 obstacle/figure}
+  \caption{weight = 5/1 obstacle/finish}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{results/qlearn-s120x3-o10-w50.pdf}
-  \caption{weight = 50/1 obstacle/figure}
+  \caption{weight = 50/1 obstacle/finish}
 \end{figure}
 
-I made the state space more nuanced for the following test; in this one, instead of looking at just the candidate to the right, the agent could looks at the three blocks one-away, and five blocks two-away, in each direction. Presumably, this would help with being able to keep the epsilon low, since the probability of doing something stupid (random) twice in a row is epsilon$^2$. It turns out that this does help quite a bit, though it takes longer to learn; see Figure \ref{fig:two-away}.
+\noindent I made the state space more nuanced for the following test; in this one, instead of looking at just the candidate to the right, the agent could looks at the three blocks one-away, and five blocks two-away, in each direction. Presumably, this would help with being able to keep the epsilon low, since the probability of doing something stupid (random) twice in a row is epsilon squared. It turns out that this does help quite a bit, though it takes longer to learn; see Figure \ref{fig:two-away}.
 
 \begin{figure}[H]
   \centering
@@ -71,7 +74,7 @@ I made the state space more nuanced for the following test; in this one, instead
   \label{fig:two-away}
 \end{figure}
 
-Certainly, it takes longer to train, but the result seems reassuring.
+\noindent Certainly, it takes longer to train, but the result seems reassuring.
 
 Here's another case, with much higher penalties; not a whole lot changes, and the reason why the Combined trend is so far underneath the Obstacle trend is because the Combined module doesn't account for time; if it was smart, if it accidentally hit more than one obstacle, it would hover around the end until the time was almost up, and then finish. But it's not smart (it doesn't know about the $reward / time$ metric), so it finishes as quickly as possible.
 
@@ -81,7 +84,7 @@ Here's another case, with much higher penalties; not a whole lot changes, and th
   \caption{High penalties of -100}
 \end{figure}
 
-If I set the penalty lower, the results suddenly \emph{look} a lot better:
+\noindent If I set the penalty lower, the results suddenly \emph{look} a lot better:
 
 \begin{figure}[H]
   \centering
