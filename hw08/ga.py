@@ -15,7 +15,7 @@ class Output(object):
             if '.csv' in arg:
                 filename = arg
         if not filename:
-            for prefix in 'abcdefghijklmnopqrstuv':
+            for prefix in 'abcdefghijklmnopqrstuvwxyz':
                 filename = 'results/output-%s.csv' % prefix
                 if not os.path.exists(filename):
                     break
@@ -134,28 +134,21 @@ class Parasite(object):
         return '<Parasite %r>' % self.test_values
 
 class Trial(object):
-    def __init__(self, solver, parasite, penalty=None):
+    def __init__(self, solver, parasite, mistakes=None):
         self.solver = solver
         self.parasite = parasite
         # `fitness` returns the number of mistakes made by a candidate
-        if penalty != None:
-            self.penalty = None
-        else:
-            self.penalty = solver.mistakes(parasite)  # + (len(solver) / 10)
+        self.mistakes = mistakes or solver.mistakes(parasite)
 
     def clone(self):
-        return Trial(self.solver, self.parasite, self.penalty)
+        return Trial(self.solver, self.parasite, self.mistakes)
 
 solvers_size = 200
-solvers_carryover = 150
+solvers_carryover = 100
 
 parasites_size = 20
-# crossover_count = generation_size - carryover_count
-# best_count = 50
 
-# iterations = 50
 iterations = 50000
-# p_mutation = 0.01
 
 # (x, y) swaps are good iff x < y
 monotonic = [(x, y) for x in range(16) for y in range(x + 1, 16)]
@@ -167,7 +160,8 @@ evaluation_swaps = monotonic
 
 solver_key = lambda trial: trial.solver
 parasite_key = lambda trial: trial.parasite
-penalty_key = lambda trial: trial.penalty
+mistakes_key = lambda trial: trial.mistakes
+penalty_key = lambda trial: trial.mistakes + (len(trial.solver) / 50.0)
 first_key = lambda x: x[0]
 
 output = Output()
@@ -180,12 +174,15 @@ def run(stdscr, debug):
     for iteration in range(iterations):
         trials = [Trial(solver, parasite) for parasite in parasites for solver in solvers]
 
+        by_solver_mistakes = []
         by_solver = []
         for solver, solver_trials in groupby(sorted(trials, key=solver_key), solver_key):
             solver_trials = list(solver_trials)
+            total_mistakes = sum(map(mistakes_key, solver_trials))
             total_penalty = sum(map(penalty_key, solver_trials))
+            by_solver_mistakes.append((total_mistakes, solver))
             by_solver.append((total_penalty, solver))
-            if total_penalty == 0:
+            if total_mistakes == 0:
                 print
                 print 'Perfect solver: %r' % solver
                 print '  len: %d' % len(solver)
@@ -198,8 +195,8 @@ def run(stdscr, debug):
 
         by_parasite = []
         for parasite, parasite_trials in groupby(sorted(trials, key=parasite_key), parasite_key):
-            total_penalty = sum(map(penalty_key, parasite_trials))
-            by_parasite.append((total_penalty, parasite))
+            total_mistakes = sum(map(mistakes_key, parasite_trials))
+            by_parasite.append((total_mistakes, parasite))
         # we prefer higher penalties
         #randproportionalvalue(easiest_parasites)
 
@@ -208,16 +205,19 @@ def run(stdscr, debug):
         worst_score, worst_candidate = best_solvers[-1]
 
         if debug and iteration % 10 == 0:
+            best_solvers_by_mistakes = sorted(by_solver_mistakes, key=first_key)
+            best_mistakes, best_candidate_by_mistakes = best_solvers_by_mistakes[0]
+            # worst_score, worst_candidate = best_solvers[-1]
             print '#%5d, mean: %7.2f' % (iteration, mean([score for score, solver in best_solvers]))
-            print '       worst: %3d   (%3d)' % (worst_score, len(worst_candidate.swaps))
-            print '        best: %3d   (%3d)' % (best_score, len(best_candidate.swaps))
-            print '              %r' % best_candidate.swaps
+            # print '       worst: %3d   (%3d)' % (worst_score, len(worst_candidate.swaps))
+            print '        best: %3d - %3.1f (%3d)' % (best_mistakes, best_score, len(best_candidate_by_mistakes))
+            # print '              %r' % best_candidate.swaps
 
             easiest_parasites = sorted(by_parasite, key=first_key)
-            hardest_parasite_penalty, hardest_parasite = easiest_parasites[-1]
-            print ' hardest_parasite: %r' % hardest_parasite.test_values
-            print '            score: %d' % hardest_parasite_penalty
-            print "   best's attempt: %r" % best_candidate.sort(hardest_parasite)
+            hardest_parasite_mistakes, hardest_parasite = easiest_parasites[-1]
+            # print ' hardest_parasite: %r' % hardest_parasite.test_values
+            # print '            score: %d' % hardest_parasite_mistakes
+            # print "   best's attempt: %r" % best_candidate.sort(hardest_parasite)
 
             # print ' eval seq  %r' % eval_pool_choice
             # print ' best sort %r' % best_candidate.sort(eval_pool_choice)
