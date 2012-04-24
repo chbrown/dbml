@@ -4,5 +4,5 @@ misc/
 *.aux
 *.log
 *.out
-*.pyuc
+*.pyc
 scans/

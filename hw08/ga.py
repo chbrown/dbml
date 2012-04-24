@@ -1,88 +1,36 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
-# import math
-from random import random as unif  # , choice as choice
-# import re
-# from collections import defaultdict, Counter
+from random import random as unif
 import numpy as np
-# import curses
 from itertools import groupby
+from lib import mean, repeat, randrange, randindex, randpenalty, randproportionalvalue
 
-def randrange(max):
-    return int(unif() * max)
+class Output(object):
+    fp = None
 
-def randindex(sequence):
-    return randrange(len(sequence))
+    def __init__(self, filename=None):
+        # filename = '/dev/null'
+        for arg in sys.argv:
+            if '.csv' in arg:
+                filename = arg
+        if not filename:
+            for prefix in 'abcdefghijklmnopqrstuv':
+                filename = 'results/output-%s.csv' % prefix
+                if not os.path.exists(filename):
+                    break
+        self.filename = filename
 
-def mean(numbers):
-    return float(sum(numbers)) / len(numbers)
+    def write(self, line):
+        if self.fp == None:
+            self.fp = open(self.filename, 'w')
+        self.fp.write(line)
+        self.fp.write('\n')
+        self.fp.flush()
 
-def repeat(func, sequence):
-    '''Can take a list-like object or an integer'''
-    count = sequence if isinstance(sequence, int) else len(sequence)
-    return [func() for x in range(count)]
+    def csv(self, *cells):
+        self.write(','.join(map(str, cells)))
 
-def randproportional_mine(distribution):
-    # given a list of floats, pick one with probability proportional
-    # to the float relative to the other floats. return an int index.
-    cumulative = []
-    last = 0
-    for event in distribution:
-        last += event
-        cumulative.append(last)
-    # cumulative[-1] should equal the sum (=last), now
-    uniform = unif() * last
-    for i, threshold in enumerate(cumulative):
-        if uniform <= threshold:
-            return i
-
-def randproportional(weights):
-    '''http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/ -- very clever'''
-    threshold = unif() * sum(weights)
-    for i, weight in enumerate(weights):
-        threshold -= weight
-        if threshold <= 0:
-            return i
-
-def randproportionalvalue(weights_options):
-    # print weights_options
-    # try:
-    weights, options = zip(*weights_options)
-    # except Exception, exc:
-        # print weights_options
-        # raise
-    return options[randproportional(weights)]
-
-def randpenalty(penalties_options):
-    # helper function for randproportional:
-    #   1) figures out weights from penalties
-    #   2) returns item instead of index
-    penalties, options = zip(*penalties_options)
-    worst = max(penalties)
-    weights = [worst - penalty for penalty in penalties]
-    return randproportionalvalue(zip(weights, options))
-
-def randsegment(sequence):
-    length = randindex(sequence)
-    start = randrange(len(sequence) - length)
-    return (start, start + length)
-
-def unique(sequence):
-    seen = set()
-    for item in sequence:
-        if item not in seen:
-            seen.add(item)
-            yield item
-
-res_filename = '/dev/null'
-for arg in sys.argv:
-    if '.csv' in arg:
-        res_filename = arg
-fp = open(res_filename, 'w')
-def log(line):
-    fp.write(line)
-    fp.write('\n')
-    fp.flush()
 
 class Candidate(object):
     def __init__(self, swaps=None):
@@ -102,13 +50,8 @@ class Candidate(object):
         return test
 
     def mistakes(self, parasite):
-        # more positive = fitter individual
-        # solution = sorted(original)
-        result = self.sort(parasite)
-        # misorderings =
-        # len(evaluation_swaps) -
-        # return misorderings
-        return len([a for a, b in evaluation_swaps if result[a] > result[b]])
+        attempt = self.sort(parasite)
+        return len([a for a, b in evaluation_swaps if attempt[a] > attempt[b]])
 
     def crossover(self, other):
         '''Returns a tuple of the results of the crossover (copies)'''
@@ -227,6 +170,9 @@ parasite_key = lambda trial: trial.parasite
 penalty_key = lambda trial: trial.penalty
 first_key = lambda x: x[0]
 
+output = Output()
+output.csv('iteration', 'best_fitness', 'best_length', 'worst_fitness', 'worst_length')
+
 def run(stdscr, debug):
     solvers = repeat(Candidate, solvers_size)
     parasites = repeat(Parasite, parasites_size)
@@ -258,14 +204,14 @@ def run(stdscr, debug):
         #randproportionalvalue(easiest_parasites)
 
         best_solvers = sorted(by_solver, key=first_key)
+        best_score, best_candidate = best_solvers[0]
+        worst_score, worst_candidate = best_solvers[-1]
 
         if debug and iteration % 10 == 0:
-            best_score, best_candidate = best_solvers[0]
-            worst_score, worst_candidate = best_solvers[-1]
             print '#%5d, mean: %7.2f' % (iteration, mean([score for score, solver in best_solvers]))
             print '       worst: %3d   (%3d)' % (worst_score, len(worst_candidate.swaps))
             print '        best: %3d   (%3d)' % (best_score, len(best_candidate.swaps))
-            print '              %r' % sorted(best_candidate.swaps)
+            print '              %r' % best_candidate.swaps
 
             easiest_parasites = sorted(by_parasite, key=first_key)
             hardest_parasite_penalty, hardest_parasite = easiest_parasites[-1]
@@ -302,6 +248,8 @@ def run(stdscr, debug):
             parasite.mutate()
 
         parasites = next_parasites
+
+        output.csv(iteration, best_score, len(best_candidate), worst_score, len(worst_candidate))
         # for candidate in next_generation:
         #     if unif() < 0.1:
         #         candidate.swaps.insert(randrange(len(candidate.swaps)), Candidate.swap())
@@ -311,5 +259,4 @@ def run(stdscr, debug):
 
 if __name__ == '__main__':
     debug = 'debug' in sys.argv
-    # curses.wrapper(run, debug)
     run(None, debug)

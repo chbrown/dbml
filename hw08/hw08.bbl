@@ -1,0 +1,18 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[De{J}ong(1975)]{dejong:1975}
+Ken De{J}ong.
+\newblock \emph{An Analysis of the Behavior of a Class of Genetic Adaptive
+  Systems}.
+\newblock PhD thesis, University of Michigan, Ann Arbor, 1975.
+
+\bibitem[Whitley(1993)]{whitley:1993}
+Darrell Whitley.
+\newblock A genetic algorithm tutorial, 1993.
+
+\end{thebibliography}

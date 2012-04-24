@@ -2,13 +2,11 @@ import sys
 import math
 import random
 import numpy as np
+import ga
+from ga import unif
 from time import time
 
 iterations = [int(arg) for arg in sys.argv if arg.isdigit()][0]
-
-from ga import randrange, unif
-
-started = time()
 
 def gauss(mu, sigma):
     while True:
@@ -26,65 +24,68 @@ def gauss2(mu, sigma):
     return math.sqrt(-2.0 * math.log(x1)) * math.cos(2 * math.pi * x2)
     # y2 = sqrt( - 2 ln(x1) ) sin( 2 pi x2 )
 
-if 'random.random' in sys.argv:
-    print 'random.random'
+def random_random():
     for i in xrange(iterations):
         r = random.random()
-if 'np.random.random' in sys.argv:
-    print 'np.random.random'
+def np_random_random():
     for i in xrange(iterations):
         r = np.random.random()
-if 'random.uniform' in sys.argv:
-    print 'random.uniform'
+def random_uniform():
     for i in xrange(iterations):
         r = random.uniform(0, 100)
-if 'np.random.uniform' in sys.argv:
-    print 'np.random.uniform'
+def np_random_uniform():
     for i in xrange(iterations):
         r = np.random.uniform(0, 100)
-if 'random.randrange' in sys.argv:
-    print 'random.randrange'
+def random_randrange():
     for i in xrange(iterations):
         r = random.randrange(100)
-if 'randrange' in sys.argv:
-    print 'randrange'
+def ga_randrange():
     for i in xrange(iterations):
-        r = randrange(100)
-if 'lcg' in sys.argv:
-    print 'lcg'
+        r = ga.randrange(100)
+def lcg():
     r = 1
     r = np.array([r], np.uint32)[0]
     for i in xrange(iterations):
         # I don't even know.
         r = r * 1664525 + 1013904223
-if 'sysrand.random' in sys.argv:
-    print 'sysrand.random'
+def sysrand_random():
     sysrand = random.SystemRandom()
     for i in xrange(iterations):
         r = sysrand.random()
-if 'np.random.random.vector' in sys.argv:
-    print 'np.random.random.vector'
+def np_random_random_vector():
     rs = np.random.random(iterations)
     for i in xrange(iterations):
         r = rs.pop()
-if 'random.gauss' in sys.argv:
+def random_gauss():
     # takes about 8 times longer than random.random
-    print 'random.gauss'
     for i in xrange(iterations):
         r = random.gauss(0, 1)
-if 'gauss' in sys.argv:
-    print 'gauss'
+def local_gauss():
     for i in xrange(iterations):
         r = gauss(0, 1)
-if 'gauss2' in sys.argv:
-    print 'gauss2'
+def local_gauss2():
     for i in xrange(iterations):
         r = gauss2(0, 1)
-if 'np.random.normal' in sys.argv:
+def np_random_normal():
     # about 3 times as fast as home-made gauss, 4 times faster than python lib gauss
-    print 'np.random.normal'
     for i in xrange(iterations):
         r = np.random.normal(0, 1)
+def list_append():
+    l = []
+    for i in xrange(iterations):
+        l.append(i)
+def list_plusequals():
+    # about 0.5 times slower than list append
+    l = []
+    for i in xrange(iterations):
+        l += [i]
+
+
+func = [v for k, v in locals().items() if k in sys.argv][0]
+
+started = time()
+
+res = func()
 
 ended = time()
 

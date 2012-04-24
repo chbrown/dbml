@@ -1,8 +1,9 @@
-\documentclass[11pt]{report}
+\documentclass[11pt]{article}
 \usepackage[pdftex]{graphicx}
 
 \usepackage{henrian-basic}
 \usepackage{henrian-homework}
+\usepackage{chngpage}
 
 \usepackage{amsmath}
 \usepackage{float}
@@ -53,12 +54,12 @@ Mutation is simpler than crossover; in my implementation, there is one parameter
 
 \section{Results}
 
-In Figure \ref{fig:best-solution-performance}, you can see the best solution's performance, plotted as the number of generations progresses. As you can see, it converges pretty quickly.
+In Figure \ref{fig:best-solution-performance}, you can see the best solution's performance, plotted as the number of generations progresses. As you can see, it converges pretty quickly---it took just over 600 generations.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{results/best-solution-performance.pdf}
-  \caption{The best solution's performance, over generation}
+  \includegraphics[width=0.95\textwidth]{results/output-i600-fitness.pdf}
+  \caption{The best solution's performance, over generation. Lower is better, because my fitness function measured mistakes made in ordering.}
   \label{fig:best-solution-performance}
 \end{figure}
 
@@ -67,8 +68,8 @@ And in Figure \ref{fig:best-solution-length}, I show see the length of the best 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{results/best-solution-performance.pdf}
-  \caption{The best solution's length, over generation}
+  \includegraphics[width=0.95\textwidth]{results/output-i600-length.pdf}
+  \caption{The best solution's length, over generation.}
   \label{fig:best-solution-length}
 \end{figure}
 
@@ -76,12 +77,26 @@ And in Figure \ref{fig:best-solution-length}, I show see the length of the best 
 
 Here is a final solution, a final parasite sequence, and the solution's sort of that sequence:
 
-\begin{tabular}{cccccccccccccccc}
-  y \\
-  x \\
-\end{tabular}
+\begin{figure}[H]
+  \begin{adjustwidth}{.5in}{.5in}
+    \begin{footnotesize}
+      (2,13) (2,2) (7,3) (8,4) (4,2) (7,14) (9,10) (12,7) (2,2) (11,2) (9,14) (4,12) (13,2) (7,4) (5,9) (2,2) (5,5) (4,2) (7,14) (8,7) (9,11) (15,5) (12,12) (11,13) (10,11) (10,7) (12,7) (1,9) (9,10) (7,4) (9,11) (15,5) (12,12) (12,7) (5,9) (4,12) (6,5) (2,9) (7,8) (7,3) (10,14) (7,14) (7,8) (4,12) (9,10) (2,15) (8,0) (3,14) (1,12) (8,6) (12,7) (6,15) (5,9) (15,2) (2,9) (4,12) (9,10) (2,15) (8,0) (3,14) (1,12) (8,6) (12,7) (6,15) (12,7) (1,7) (14,11) (9,10) (15,11) (6,7) (10,7) (7,3) (11,3) (15,5) (2,2) (7,14) (9,10) (15,2) (10,11) (11,3) (7,8) (15,12) (9,3) (2,9) (6,9) (6,7) (15,12) (9,3) (12,7) (2,9) (10,11) (7,8) (7,8) (7,4) (5,9) (12,12) (2,15) (8,0) (7,4) (5,9) (2,2) (7,3) (8,4) (4,2) (7,14) (9,10) (12,7) (2,2) (5,5) (9,14) (4,12) (10,14) (7,14) (7,8) (4,12) (9,10) (2,15) (8,0) (3,14) (1,12) (8,6) (5,9) (15,2) (6,7) (12,7) (12,7) (6,15) (6,15) (5,9) (1,12) (8,6) (12,7) (6,15) (5,9) (15,2) (14,0) (13,2) (7,4) (5,9) (2,2) (5,5) (6,7) (10,7) (7,3) (9,10) (12,12) (15,2) (9,10) (2,9) (10,11) (7,8) (15,12) (9,3) (12,7) (15,2) (9,10) (11,5) (10,11) (7,8) (15,12) (11,3) (12,7) (5,9) (2,2) (6,9) (7,8) (11,13) (10,11) (9,11) (3,14) (1,12) (8,6) (13,0) (6,15) (5,9) (15,2) (14,0) (13,2) (7,4) (5,9) (2,2) (5,5) (4,2) (7,14) (8,7) (9,11) (15,5) (12,12) (11,13) (10,11) (10,7) (12,7) (1,9) (9,10) (7,4) (9,11) (15,5) (12,12) (12,7) (5,9) (4,12) (6,5) (2,9) (7,8) (7,3) (10,14) (7,14) (7,8) (4,12) (9,10) (2,15) (8,0) (3,14) (1,12) (8,6) (12,7) (6,15) (5,9) (15,2) (14,0) (13,2) (7,4) (5,9) (2,2) (5,5) (4,2) (7,14) (8,7) (9,11) (15,5) (12,12) (11,13) (10,11) (10,7) (12,7) (1,7) (15,11) (6,7) (10,7) (7,3) (11,3) (15,5) (2,2) (12,12) (2,13) (7,8) (15,12) (11,13) (10,11) (10,7) (7,3) (4,12) (12,12) (15,2) (9,10) (2,9) (10,11) (9,10) (1,2) (2,13) (12,12) (15,2) (9,10) (2,9) (10,11) (7,8) (15,12) (9,3) (12,7) (9,11) (0,15) (0,0) (13,14) (1,15) (3,12) (8,10)
+    \end{footnotesize}
+  \end{adjustwidth}
+  \caption{The final solution. Total length: 276.}
+\end{figure}
 
-
+\begin{figure}[H]
+  \begin{small}
+    \begin{center}
+      \begin{tabular}{rcccccccccccccccc}
+        Parasite: & 59 & 80 & 81 & 41 & 88 & 83 & 56 & 76 & 92 & 62 & 19 & 98 & 98 & 69 & 91 & 55 \\
+        Solution: & 19 & 41 & 55 & 56 & 59 & 62 & 69 & 76 & 80 & 81 & 83 & 88 & 91 & 92 & 98 & 98 \\
+      \end{tabular}
+    \end{center}
+  \end{small}
+  \caption{A sort by the final solution of one of the most difficult parasites.}
+\end{figure}
 
 \bibliography{/Volumes/Zooey/Dropbox/ut/tex/liography}
 
